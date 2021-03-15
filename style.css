@@ -1,3 +1,33 @@
-#root {
+/* #root {
   color: red;
+} */
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  /* background-color: #261E1D !important; */
+  box-sizing: border-box;
+}
+
+.episode-count {
+  margin-bottom: 0;
+}
+
+.form {
+  padding-top: 1.5rem; 
+  padding-bottom: 1.5rem; 
+}
+
+.inputField {
+  margin: 1rem 2rem 1rem 0;
+
+}
+
+.card-header-text {
+  font-size: 1.4rem;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+}
+
+.card-body > p, .card-img-top {
+  padding-bottom: 1.5rem;
 }
