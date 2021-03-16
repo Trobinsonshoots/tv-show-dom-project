@@ -1,35 +1,15 @@
 // const getData = 
+
+let fetchUrl = 'https://api.tvmaze.com/shows/82/episodes';
+let aUrl = 'https://api.tvmaze.com/shows/82/episodes';
 const rowCont = document.getElementById('row-cont');
 
 const epAmount = document.createElement('p');
 epAmount.classList.add('col-md-4', 'episode-count');
 const input = document.getElementById('input');
-const select = document.getElementById('select');
+const selectShow = document.getElementById('selectShow');
+const selectEpisode = document.getElementById('selectEpisode');
 input.parentElement.insertAdjacentElement('afterend', epAmount);
-
-function setup() {
-  fetch('https://api.tvmaze.com/shows/82/episodes')
-    .then((res) => res.json())
-    .then((data) => {
-      let allEpisodes = data;
-      makePageForEpisodes(allEpisodes);
-      selectEp(allEpisodes);
-
-      input.addEventListener('keyup', (e) => {
-        const inputStr = e.target.value.toLowerCase();
-
-        const searchEpisodes = allEpisodes.filter( ep => {
-          const nameLower = ep.name.toLowerCase();
-          const summaryLower = ep.summary.toLowerCase();
-
-          if (nameLower.includes(inputStr) || summaryLower.includes(inputStr)) {
-            return ep;
-          }
-        });
-        makePageForEpisodes(searchEpisodes);
-      });
-    });
-}
 
 const makePageForEpisodes = (episodeLi) => {
   epAmount.innerText = `Displaying ${episodeLi.length} episode(s)`;
@@ -59,6 +39,42 @@ const makePageForEpisodes = (episodeLi) => {
   rowCont.innerHTML = htmlStr;
 };
 
+const selectSh = (showList) => {
+  let showAlphabetical = showList.sort((a,b) => {
+    return a.name.localeCompare(b.name);
+  });
+
+  let showOrder = showAlphabetical.map((ep) => {
+    const showName = ep.name;
+    return `<option>${showName}</option>`;
+  }).join('');
+  showOrder = `<option> Pick Show </option>` + showOrder;
+  selectShow.innerHTML = showOrder;
+
+  selectShow.addEventListener('change', (e) => {
+    let showName = e.target.value;
+
+    let showSelected = showList.filter((ep) => {
+      if (ep.name === showName){
+        return ep;
+      }
+    });
+
+    let showId = showSelected[0].id.toString();
+    fetchUrl = `https://api.tvmaze.com/shows/${showId}/episodes`;
+
+    console.log(fetchUrl)
+
+    setup(fetchUrl);
+
+  });
+
+  // console.log(showAlphabetical);
+  // let showUrl = 'https://api.tvmaze.com/shows/SHOW_ID/episodes';
+  // let newShow = showUrl.replace('SHOW_ID', 82);
+  // console.log(newShow);
+};
+
 const selectEp = (epList) => {
   let selectHtml = epList.map((ep) => {
     let epNum = ep.number;
@@ -73,9 +89,9 @@ const selectEp = (epList) => {
     return `<option>${epSE} - ${ep.name}</option>`
   }).join('');
   selectHtml = `<option> All Episodes </option>` + selectHtml;
-  select.innerHTML = selectHtml;
+  selectEpisode.innerHTML = selectHtml;
 
-  select.addEventListener('change', (e) => {
+  selectEpisode.addEventListener('change', (e) => {
     let selectedEpVal = e.target.value;
 
     if (selectedEpVal === 'All Episodes') {
@@ -89,6 +105,36 @@ const selectEp = (epList) => {
     };
   })
 };
+
+function setup(url) {
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      let allEpisodes = data;
+      const allShows = getAllShows();
+      makePageForEpisodes(allEpisodes);
+      selectEp(allEpisodes);
+      selectSh(allShows);
+
+      input.addEventListener('keyup', (e) => {
+        const inputStr = e.target.value.toLowerCase();
+
+        const searchEpisodes = allEpisodes.filter( ep => {
+          const nameLower = ep.name.toLowerCase();
+          const summaryLower = ep.summary.toLowerCase();
+
+          if (nameLower.includes(inputStr) || summaryLower.includes(inputStr)) {
+            return ep;
+          }
+        });
+        makePageForEpisodes(searchEpisodes);
+      });
+    });
+}
+
+
+
+window.onload = setup(fetchUrl);
 
 // input.addEventListener('keyup', (e) => {
 //   const inputStr = e.target.value.toLowerCase();
@@ -109,5 +155,3 @@ const selectEp = (epList) => {
 //   makePageForEpisodes(allEpisodes);
 //   selectEp(allEpisodes);
 // }
-
-window.onload = setup;
