@@ -22,12 +22,34 @@ body {
 
 }
 
+.show-name {
+  padding-bottom: 0;
+}
+
+.header-show-details {
+  font-size: 0.8rem;
+  margin-right: 15px;
+  color: grey;
+}
+
+.show-rating {
+  font-size: 0.8rem;
+  margin-left: 5px;
+  color: grey;
+}
+
+.card-header-text-main-page {
+  font-size: 1.4rem;
+}
+
+.card-body > p, .card-img-top {
+  padding-bottom: 1.5rem;
+}
+
+/* when not on main page  */
 .card-header-text {
   font-size: 1.4rem;
   padding-top: 1.2rem;
   padding-bottom: 1.2rem;
 }
 
-.card-body > p, .card-img-top {
-  padding-bottom: 1.5rem;
-}

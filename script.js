@@ -1,56 +1,67 @@
-const rowCont = document.getElementById('row-cont');
+let allEpisodes = [];
+let rowCont = document.getElementById('row-cont');
+const rootElem = document.getElementById("root");
+
 const epAmount = document.createElement('p');
-epAmount.classList.add('col-md-4', 'episode-count');
-const input = document.getElementById('input');
-const selectShow = document.getElementById('selectShow');
-const selectEpisode = document.getElementById('selectEpisode');
-input.parentElement.insertAdjacentElement('afterend', epAmount);
+epAmount.classList.add('col-md-4', 'episode-count')
+let input = document.getElementById('input');
+let select = document.getElementById('select');
+input.parentElement.insertAdjacentElement("afterend", epAmount);
 
-// API Version
-// let fetchUrl = 'https://api.tvmaze.com/shows/82/episodes';
-
-function setting() {
-  const allShows = getAllShows();
-  onLoadScreen(allShows);
+function setup() {
+  allEpisodes = getAllEpisodes();
+  makePageForEpisodes(allEpisodes);
+  selectEp(allEpisodes)
 }
 
-const onLoadScreen = (showsListing) => {
-  const htmlShowStr = showsListing.map((show) => {
-    const img = show && show.image ? show.image.medium : null;
-    const showName = `<h2 id="${show.id}" class="show-name card-header-text">${show.name}</h2>`;
-    return `
-      <div class="col">
-        <div class="card text-center h-100">
-          <div class="card-header">
-            ${showName}
-          </div>
-          <img class="card-img-top" src="${img}">
-          <div class="card-body col-10 offset-1">
-            ${show.summary}
-          </div>
-        </div>
-      </div>
-      `;
+const selectEp = (epList) => {
+  let selectHtml = epList.map((ep) => {
+    let epNum = ep.number;
+    let epSeason = ep.season;
+    if (epNum <9) {
+      epNum = `0${epNum}`;
+    }
+    if (epSeason < 9) {
+      epSeason = `0${epSeason}`;
+    }
+    let epSE = `S${epSeason}E${epNum}`;
+    return `<option>${epSE} - ${ep.name}</option>`
   }).join('');
+  selectHtml = `<option> All Episodes </option>` + selectHtml;
+  select.innerHTML = selectHtml;
 
-  rowCont.innerHTML = htmlShowStr;
-  loadEp();
+  select.addEventListener('change', (e) => {
+    let selectedEpVal = e.target.value;
+
+    if (selectedEpVal == 'All Episodes') {
+      makePageForEpisodes(allEpisodes)
+    } else {
+      selectedEpVal = selectedEpVal.split('- ',selectedEpVal.length)[1];
+
+      const selectedEp = allEpisodes.filter(ep => {
+        return ep.name.includes(selectedEpVal);
+      })
+      makePageForEpisodes(selectedEp);
+    };
+
+  })
 };
 
-function loadEp() {
-  const showName = document.getElementsByClassName('show-name');
 
-  for (let i = 0; i < showName.length; i++) {
-    const clickedShow = showName[i];
-    clickedShow.addEventListener('click', () => {
-      const showId = clickedShow.id;
-      const showsUrl = 'https://api.tvmaze.com/shows/SHOW_ID/episodes';
-      const showUrl = showsUrl.replace('SHOW_ID', showId);
+input.addEventListener('keyup', (e) => {
+  const inputStr = e.target.value.toLowerCase();
+  console.log(`im input` + inputStr)
 
-      setup(showUrl)
-    });
-  }
-}
+  const searchEp = allEpisodes.filter( ep => {
+    let nameLower = ep.name.toLowerCase();
+    let summaryLower = ep.summary.toLowerCase();
+
+    if (nameLower.includes(inputStr) || summaryLower.includes(inputStr)) {
+      return ep;
+    }
+  });
+  makePageForEpisodes(searchEp);
+});
 
 const makePageForEpisodes = (episodeLi) => {
   epAmount.innerText = `Displaying ${episodeLi.length} episode(s)`;
@@ -63,6 +74,7 @@ const makePageForEpisodes = (episodeLi) => {
     if (epSeason < 9) {
       epSeason = `0${epSeason}`;
     }
+
     return `
     <div class="col">
       <div class="card text-center h-100">
@@ -80,228 +92,68 @@ const makePageForEpisodes = (episodeLi) => {
   rowCont.innerHTML = htmlStr;
 };
 
-const selectSh = (showList) => {
-  let showAlphabetical = showList.sort((a,b) => {
-    return a.name.localeCompare(b.name);
-  });
 
-  let showOrder = showAlphabetical.map((ep) => {
-    const showName = ep.name;
-    return `<option>${showName}</option>`;
-  }).join('');
-  showOrder = `<option> Pick Show </option>` + showOrder;
-  selectShow.innerHTML = showOrder;
+window.onload = setup;
 
-  selectShow.addEventListener('change', (e) => {
-    let showName = e.target.value;
+// function makePageForEpisodes(episodeList) {
+//   const rootElem = document.getElementById("root");
+//   const epAmount = document.createElement('p');
+//   let rowCont = document.getElementById('row-cont');
+//   let input = document.createElement('input');
 
-    let showSelected = showList.filter((ep) => {
-      if (ep.name === showName) {
-        return ep;
-      }
-    });
+//   epAmount.classList.add('d-inline');
+//   epAmount.innerText = `Displaying ${episodeList.length} episode(s)`;
+//   input.classList.add('inputField', 'col-2');
 
-    const showId = showSelected[0].id.toString();
-    let fetchUrl = `https://api.tvmaze.com/shows/${showId}/episodes`;
+//   rootElem.prepend(epAmount);
+//   rootElem.prepend(input);
 
-    setup(fetchUrl);
-
-  });
-
-  console.log(showAlphabetical);
-  let showUrl = 'https://api.tvmaze.com/shows/SHOW_ID/episodes';
-  let newShow = showUrl.replace('SHOW_ID', 82);
-  console.log(newShow);
-};
-
-function selectEp(epList) {
-  let selectHtml = epList.map((ep) => {
-    let epNum = ep.number;
-    let epSeason = ep.season;
-    if (epNum < 9) {
-      epNum = `0${epNum}`;
-    }
-    if (epSeason < 9) {
-      epSeason = `0${epSeason}`;
-    }
-    const epSE = `S${epSeason}E${epNum}`;
-    return `<option>${epSE} - ${ep.name}</option>`;
-  }).join('');
-  selectHtml = `<option> All Episodes </option>` + selectHtml;
-  selectEpisode.innerHTML = selectHtml;
-
-  selectEpisode.addEventListener('change', (e) => {
-    let selectedEpVal = e.target.value;
-
-    if (selectedEpVal === 'All Episodes') {
-      makePageForEpisodes(epList);
-    } else {
-      selectedEpVal = selectedEpVal.split('- ', selectedEpVal.length)[1];
-      const selectedEp = epList.filter(ep => {
-        return ep.name.includes(selectedEpVal);
-      });
-      makePageForEpisodes(selectedEp);
-    };
-  });
-}
-
-function setup(url) {
-  fetch(url)
-    .then((res) => res.json())
-    .then((data) => {
-      let allEpisodes = data;
-      const allShows = getAllShows();
-      makePageForEpisodes(allEpisodes);
-      selectEp(allEpisodes);
-      selectSh(allShows);
-
-      input.addEventListener('keyup', (e) => {
-        const inputStr = e.target.value.toLowerCase();
-
-        const searchEpisodes = allEpisodes.filter( ep => {
-          const nameLower = ep.name.toLowerCase();
-          const summaryLower = ep.summary.toLowerCase();
-
-          if (nameLower.includes(inputStr) || summaryLower.includes(inputStr)) {
-            return ep;
-          }
-        });
-        makePageForEpisodes(searchEpisodes);
-      });
-    });
-}
-
-
-window.onload = setting();
-
-// non API
-/// const onLoadScreen = (showsListing) => {
-
-//   let htmlShowStr = showsListing.map((show) => {
-//     // console.log(typeof show);
-//     let img = show  && show.image ? show.image.medium : null;
-
-//     return `
-//       <div class="col">
-//         <div class="card text-center h-100">
-//           <div class="card-header">
-//             <h2 class="card-header-text">${show.name}</h2>
-//           </div>
-//           <img class="card-img-top" src="${img}">
-//           <div class="card-body col-10 offset-1">
-//             ${show.summary}
-//           </div>
-//         </div>
-//       </div>
-//       `;
-//   }).join('');
-
-//   rowCont.innerHTML = htmlShowStr;
-  
-// };
-
-// const makePageForEpisodes = (episodeLi) => {
-//   epAmount.innerText = `Displaying ${episodeLi.length} episode(s)`;
-//   const htmlStr = episodeLi.map((ep) => {
-//     let epNum = ep.number;
-//     let epSeason = ep.season;
-//     if (epNum <9) {
-//       epNum = `0${epNum}`;
-//     }
-//     if (epSeason < 9) {
-//       epSeason = `0${epSeason}`;
-//     }
-//     return `
-//     <div class="col">
-//       <div class="card text-center h-100">
-//         <div class="card-header">
-//           <h2 class="card-header-text">${ep.name} - S${epSeason}E${epNum} </h2>
-//         </div>
-//         <img class="card-img-top" src="${ep.image.medium}">
-//         <div class="card-body col-10 offset-1">
-//           ${ep.summary}
-//         </div>
-//       </div>
-//     </div>
-//     `;
-//   }).join('');
-//   rowCont.innerHTML = htmlStr;
-// };
-
-// const selectSh = (showList) => {
-//   let showAlphabeticalOrder = showList.sort((a,b) => a.name.localeCompare(b.name));
-
-//   let showOrder = showAlphabeticalOrder.map((ep) => `<option>${ep.name}</option>`).join('');
-//   showOrder = `<option> Pick Show </option>` + showOrder;
-//   selectShow.innerHTML = showOrder;
-
-//   selectShow.addEventListener('change', (e) => {
-//     const showName = e.target.value;
-//     const showSelected = showList.filter((ep) => ep.name === showName);
-
-//     console.log(showSelected);
-
-//     const showId = showSelected[0].id.toString();
-//     fetchUrl = `https://api.tvmaze.com/shows/${showId}/episodes`;
-
-//     console.log(fetchUrl);
-
-//     makePageForEpisodes(showSelected);
+//   input.addEventListener('keyup', (e) => {
+//     let inputString = e.target.value;
 //   });
-// };
 
-// function selectEp(epList) {
-//   let selectHtml = epList.map((ep) => {
-//     let epNum = ep.number;
-//     let epSeason = ep.season;
-//     if (epNum < 9) {
-//       epNum = `0${epNum}`;
+//   // loop to create cards
+//   for (let i=0; i < episodeList.length; i++){
+//     let epName = episodeList[i].name;
+//     let epNum = episodeList[i].number;
+//     let epSeason = episodeList[i].season;
+//     let epImg = episodeList[i].image.medium;
+//     let epSummary = episodeList[i].summary;
+
+//     if (epNum < 10  ) {
+//       epNum = "0" + epNum.toString();
 //     }
-//     if (epSeason < 9) {
-//       epSeason = `0${epSeason}`;
+//     if (epSeason < 10  ) {
+//       epSeason = "0" + epSeason.toString();
 //     }
-//     const epSE = `S${epSeason}E${epNum}`;
-//     return `<option>${epSE} - ${ep.name}</option>`;
-//   }).join('');
-//   selectHtml = `<option> All Episodes </option>` + selectHtml;
-//   selectEpisode.innerHTML = selectHtml;
 
-//   selectEpisode.addEventListener('change', (e) => {
-//     let selectedEpVal = e.target.value;
+//     // Created Elements
+//     let cardCont = document.createElement('div')
+//     let card = document.createElement('div');
+//     let cardHeader = document.createElement('div');
+//     let cardHeaderText = document.createElement('h2');
+//     let cardImg = document.createElement('img');
+//     let cardBody = document.createElement('div');
 
-//     if (selectedEpVal === 'All Episodes') {
-//       makePageForEpisodes(epList);
-//     } else {
-//       selectedEpVal = selectedEpVal.split('- ', selectedEpVal.length)[1];
-//       const selectedEp = epList.filter(ep => {
-//         return ep.name.includes(selectedEpVal);
-//       });
-//       makePageForEpisodes(selectedEp);
-//     };
-//   });
+
+//     // Created Elements Classes
+//     cardCont.classList.add('col');
+//     card.classList.add('card', 'text-center', 'h-100');
+//     cardHeader.classList.add('card-header', );
+//     cardHeaderText.classList.add('card-header-text')
+//     cardImg.classList.add('card-img-top')
+//     cardBody.classList.add('card-body', 'col-10', 'offset-1');
+
+//     // Append created Elements
+//     rowCont.append(cardCont);
+//     cardCont.append(card);
+//     cardHeader.append(cardHeaderText);
+//     card.append(cardHeader, cardImg, cardBody);
+
+//     cardHeaderText.innerText = `${epName} - S${epSeason}E${epNum}`;
+//     cardImg.src = epImg;
+//     cardBody.innerHTML = epSummary;
+
+//   };
+//   console.log(rootElem);
 // }
-
-// input.addEventListener('keyup', (e) => {
-//   const inputStr = e.target.value.toLowerCase();
-
-//   const searchEpisodes = allEpisodes.filter( ep => {
-//     const nameLower = ep.name.toLowerCase();
-//     const summaryLower = ep.summary.toLowerCase();
-
-//     if (nameLower.includes(inputStr) || summaryLower.includes(inputStr)) {
-//       return ep;
-//     }
-//   });
-//   makePageForEpisodes(searchEpisodes);
-// });
-
-// function setup() {
-//   allEpisodes = getAllEpisodes();
-//   allShows = getAllShows();
-//   onLoadScreen(allShows);
-//   makePageForEpisodes(allEpisodes);
-//   selectEp(allEpisodes);
-//   selectSh(allShows);
-// }
-
-// window.onload = setup();
