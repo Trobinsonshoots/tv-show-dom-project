@@ -1,71 +1,151 @@
-let allEpisodes = [];
+// let fetchUrl =  ;
+// let emptyUrl = ;
+
+// let allEpisodes = getAllEpisodes();
+let allShows = getAllShows();
+const rootElem = document.getElementById('root');
+
+// Make free search
+let inputField = (function () { 
+  return `
+    <div id='freeSearchCont' class='free-search-cont row align-items-center'>
+      <div class="col-auto">
+        <label class="col-form-label" >Search</label>
+      </div>
+      <div class="col-auto">
+        <input id='freeSearchInput' type="text" class="form-control">
+      </div>
+    </div>
+    <div id='episodesFormSection' class="form row g-3 align-items-center" style='display:none'>
+      <div class="col-md-5">
+        <select id='selectShow' name="" id="" class="form-select">
+          <option value="">Pick Show</option>
+        </select>
+      </div>
+      <div class="col-md-5">
+        <select id='selectEpisode' name="" id="" class="form-select">
+          <option value="">All Episodes</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <input id='input' type="text" class="input form-control">
+      </div>
+      <p id='epAmount'></p>
+    </div>
+    <div id="row-cont" class="row show-content">
+    </div>
+  `;
+})();
+
+(makeFreeSearchInput = function () {
+  return rootElem.innerHTML = inputField;
+})();
+
+let freeSearchInput = document.getElementById('freeSearchInput');
+const freeSearchCont = document.getElementById('freeSearchCont');
+const episodesFormSection =document.getElementById('episodesFormSection');
 let rowCont = document.getElementById('row-cont');
-const rootElem = document.getElementById("root");
 
-const epAmount = document.createElement('p');
-epAmount.classList.add('col-md-4', 'episode-count')
-let input = document.getElementById('input');
-let select = document.getElementById('select');
-input.parentElement.insertAdjacentElement("afterend", epAmount);
+freeSearchInput.addEventListener('keyup', (e) => {
+    let freeSearchValue = e.target.value.toLowerCase();
+    console.log(e.target.value);
 
-function setup() {
-  allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
-  selectEp(allEpisodes)
-}
+    const filteredShows = allShows.filter(show => { 
+      let showName = show.name.toLowerCase();
+      let showGenres = show.genres.join(" ").toLowerCase();
+      let showSummary = show.summary.toLowerCase();
+  
+      if (showName.includes(freeSearchValue) || showGenres.includes(freeSearchValue) || showSummary.includes(freeSearchValue)) {
+        return show;
+      };
+    });
+    onLoadScreen(filteredShows);
+  return freeSearchValue;
+});
 
-const selectEp = (epList) => {
-  let selectHtml = epList.map((ep) => {
-    let epNum = ep.number;
-    let epSeason = ep.season;
-    if (epNum <9) {
-      epNum = `0${epNum}`;
-    }
-    if (epSeason < 9) {
-      epSeason = `0${epSeason}`;
-    }
-    let epSE = `S${epSeason}E${epNum}`;
-    return `<option>${epSE} - ${ep.name}</option>`
-  }).join('');
-  selectHtml = `<option> All Episodes </option>` + selectHtml;
-  select.innerHTML = selectHtml;
-
-  select.addEventListener('change', (e) => {
-    let selectedEpVal = e.target.value;
-
-    if (selectedEpVal == 'All Episodes') {
-      makePageForEpisodes(allEpisodes)
-    } else {
-      selectedEpVal = selectedEpVal.split('- ',selectedEpVal.length)[1];
-
-      const selectedEp = allEpisodes.filter(ep => {
-        return ep.name.includes(selectedEpVal);
-      })
-      makePageForEpisodes(selectedEp);
-    };
-
-  })
+const changeFormSection = () => {
+  if (freeSearchCont.style.display === 'flex' && episodesFormSection.style.display === 'none') {
+    freeSearchCont.style.display = 'none';
+    episodesFormSection.style.display = 'flex';
+  }
+  freeSearchCont.style.display = 'flex';
+  episodesFormSection.style.display = 'none';
 };
 
+// Make Main Screen
+const onLoadScreen = (showsListing) => {
+  const htmlShowStr = showsListing.map((show) => {
+    const img = show && show.image ? show.image.medium : null;
+    const showGenres = show.genres.join(' ');
+    const showName = `<h2 id="${show.id}" class=" card-header-text-main-page show-name">${show.name} <span class="show-rating">${show.rating.average} </span></h2>`;
+    return `
+      <div class="row h-100">
+        <div class="col-md-3">
+        <img class="card-img-top" src="${img}">
+        </div>
+        <div class="col-md-9"> 
+            <div class="card-header">
+            ${showName} <span class="header-show-details"><strong>Genres:</strong> ${showGenres}</span> <span class="header-show-details"><strong>Status:</strong>${show.status}</span> <span class="header-show-details"><strong>Runtime:</strong>${show.runtime}</span>
+            </div>
+            <div class="card-body">
+            ${show.summary}
+            </div>
+        </div>
+      </div>
+        `;
+  }).join('');
+  rowCont.innerHTML = htmlShowStr;
 
-input.addEventListener('keyup', (e) => {
-  const inputStr = e.target.value.toLowerCase();
-  console.log(`im input` + inputStr)
+  loadShow();
+};
 
-  const searchEp = allEpisodes.filter( ep => {
-    let nameLower = ep.name.toLowerCase();
-    let summaryLower = ep.summary.toLowerCase();
+function loadShow() {
+  const showName = document.getElementsByClassName('show-name');
 
-    if (nameLower.includes(inputStr) || summaryLower.includes(inputStr)) {
-      return ep;
-    }
-  });
-  makePageForEpisodes(searchEp);
+  for (let i = 0; i < showName.length; i++) {
+    const clickedShow = showName[i];
+    clickedShow.addEventListener('click', (e) => {
+      const showClickedOn= e.target;
+      const showId = showClickedOn.id;
+      const showsUrl = 'https://api.tvmaze.com/shows/SHOW_ID/episodes';
+      const showUrl = showsUrl.replace('SHOW_ID', showId);
+
+    freeSearchCont.style.display = 'none';
+    episodesFormSection.style.display = 'flex';
+    rowCont.className = "card-group row row-cols-1 row-cols-md-3 g-4";
+    episodeSetup(allShows, showUrl);
+    });
+  }
+};
+
+function episodeSetup(allShows, url) {
+  allShows = getAllShows();
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      let allEpisodes = data;
+      const epAmount = document.createElement('p');
+      epAmount.classList.add('col-md-4', 'episode-count')
+      let input = document.getElementById('input');
+      let selectEpisode = document.getElementById('selectEpisode');
+
+      makePageForEpisodes(allEpisodes);
+        selectSh(allShows);
+        selectEp(allEpisodes);
+        const logo = document.getElementById('logo');
+
+      logo.addEventListener('click', (e) => {
+        changeFormSection();
+        rowCont.className = "row show-content"
+        onLoadScreen(allShows);
+      });
 });
 
 const makePageForEpisodes = (episodeLi) => {
+  console.log(episodeLi);
   epAmount.innerText = `Displaying ${episodeLi.length} episode(s)`;
-  const htmlStr = episodeLi.map((ep) => {
+
+  let htmlStr = episodeLi.map((ep) => {
     let epNum = ep.number;
     let epSeason = ep.season;
     if (epNum <9) {
@@ -92,68 +172,103 @@ const makePageForEpisodes = (episodeLi) => {
   rowCont.innerHTML = htmlStr;
 };
 
+const selectSh = (showList) => {
+  let showAlphabeticalOrder = showList.sort((a,b) => a.name.localeCompare(b.name));
 
-window.onload = setup;
+  let showOrder = showAlphabeticalOrder.map((ep) => `<option>${ep.name}</option>`).join('');
+  showOrder = `<option> Pick Show </option>` + showOrder;
+  selectShow.innerHTML = showOrder;
 
-// function makePageForEpisodes(episodeList) {
-//   const rootElem = document.getElementById("root");
-//   const epAmount = document.createElement('p');
-//   let rowCont = document.getElementById('row-cont');
-//   let input = document.createElement('input');
+  selectShow.addEventListener('change', (e) => {
+    const showName = e.target.value;
+    const showSelected = showList.filter((ep) => ep.name === showName);
 
-//   epAmount.classList.add('d-inline');
-//   epAmount.innerText = `Displaying ${episodeList.length} episode(s)`;
-//   input.classList.add('inputField', 'col-2');
+    console.log(showSelected);
 
-//   rootElem.prepend(epAmount);
-//   rootElem.prepend(input);
+    const showId = showSelected[0].id.toString();
+    const showsUrl = 'https://api.tvmaze.com/shows/SHOW_ID/episodes';
+    const newShowUrl = showsUrl.replace('SHOW_ID', showId);
 
-//   input.addEventListener('keyup', (e) => {
-//     let inputString = e.target.value;
-//   });
+    console.log(newShowUrl);
 
-//   // loop to create cards
-//   for (let i=0; i < episodeList.length; i++){
-//     let epName = episodeList[i].name;
-//     let epNum = episodeList[i].number;
-//     let epSeason = episodeList[i].season;
-//     let epImg = episodeList[i].image.medium;
-//     let epSummary = episodeList[i].summary;
+    episodeSetup(allShows, newShowUrl);
+  });
+};
 
-//     if (epNum < 10  ) {
-//       epNum = "0" + epNum.toString();
-//     }
-//     if (epSeason < 10  ) {
-//       epSeason = "0" + epSeason.toString();
-//     }
+  function selectEp(epList) {
+    let selectHtml = epList.map((ep) => {
+      let epNum = ep.number;
+      let epSeason = ep.season;
+      if (epNum < 9) {
+        epNum = `0${epNum}`;
+      }
+      if (epSeason < 9) {
+        epSeason = `0${epSeason}`;
+      }
+      let epSE = `S${epSeason}E${epNum}`;
+      return `<option>${epSE} - ${ep.name}</option>`;
+    }).join('');
+    selectHtml = `<option>All Episodes</option>` + selectHtml;
+    selectEpisode.innerHTML = selectHtml;
+    // select event listener
+    selectEpisode.addEventListener('change', (e) => {
+      let selectedEpVal = e.target.value;
+      console.log(selectedEpVal);
 
-//     // Created Elements
-//     let cardCont = document.createElement('div')
-//     let card = document.createElement('div');
-//     let cardHeader = document.createElement('div');
-//     let cardHeaderText = document.createElement('h2');
-//     let cardImg = document.createElement('img');
-//     let cardBody = document.createElement('div');
+      if (selectedEpVal === 'All Episodes') {
+        makePageForEpisodes(epList);
+      } else {
+        selectedEpVal = selectedEpVal.split('- ', selectedEpVal.length)[1];
+        console.log(selectedEpVal);
+        const selectedEp = epList.filter(ep => {
+          return ep.name.includes(selectedEpVal);
+        });
+        console.log(selectedEp);
+        makePageForEpisodes(selectedEp);
+      }
+    });
+  }
 
+input.addEventListener('keyup', (e) => {
+  const inputStr = e.target.value.toLowerCase();
+  console.log(`im input` + inputStr)
 
-//     // Created Elements Classes
-//     cardCont.classList.add('col');
-//     card.classList.add('card', 'text-center', 'h-100');
-//     cardHeader.classList.add('card-header', );
-//     cardHeaderText.classList.add('card-header-text')
-//     cardImg.classList.add('card-img-top')
-//     cardBody.classList.add('card-body', 'col-10', 'offset-1');
+  const searchEp = allEpisodes.filter( ep => {
+    let nameLower = ep.name.toLowerCase();
+    let summaryLower = ep.summary.toLowerCase();
 
-//     // Append created Elements
-//     rowCont.append(cardCont);
-//     cardCont.append(card);
-//     cardHeader.append(cardHeaderText);
-//     card.append(cardHeader, cardImg, cardBody);
+    if (nameLower.includes(inputStr) || summaryLower.includes(inputStr)) {
+      return ep;
+    }
+  });
+  makePageForEpisodes(searchEp);
+});
 
-//     cardHeaderText.innerText = `${epName} - S${epSeason}E${epNum}`;
-//     cardImg.src = epImg;
-//     cardBody.innerHTML = epSummary;
+// function setup(url) {
+//   fetch(url)
+//     .then((res) => res.json())
+//     .then((data) => {
+//       let allEpisodes = data;
+//       const allShows = getAllShows();
+//       onLoadScreen(allShows)
+//       makePageForEpisodes(allEpisodes);
+//       selectEp(allEpisodes);
+//       selectSh(allShows);
 
-//   };
-//   console.log(rootElem);
-// }
+    //   input.addEventListener('keyup', (e) => {
+    //     const inputStr = e.target.value.toLowerCase();
+
+    //     const searchEpisodes = allEpisodes.filter( ep => {
+    //       const nameLower = ep.name.toLowerCase();
+    //       const summaryLower = ep.summary.toLowerCase();
+
+    //       if (nameLower.includes(inputStr) || summaryLower.includes(inputStr)) {
+    //         return ep;
+    //       }
+    //     });
+    //     makePageForEpisodes(searchEpisodes);
+    //   });
+    // });
+}
+
+window.onload = onLoadScreen(allShows);

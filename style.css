@@ -8,6 +8,17 @@ body {
   box-sizing: border-box;
 }
 
+#logo {
+  margin-top: 15px;
+}
+
+.free-search-cont {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+
+
 .episode-count {
   margin-bottom: 0;
 }
