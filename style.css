@@ -17,8 +17,6 @@ body {
   padding-bottom: 20px;
 }
 
-
-
 .episode-count {
   margin-bottom: 0;
 }
@@ -30,8 +28,18 @@ body {
 
 .inputField {
   margin: 1rem 2rem 1rem 0;
-
 }
+
+#castList {
+  overflow-y: scroll;
+}
+
+.card {
+  border: none !important;
+}
+
+
+
 
 .show-name {
   padding-bottom: 0;
@@ -49,11 +57,12 @@ body {
   color: grey;
 }
 
+/* Episode card  */
 .card-header-text-main-page {
   font-size: 1.4rem;
 }
 
-.card-body > p, .card-img-top {
+.card-img-top {
   padding-bottom: 1.5rem;
 }
 
@@ -62,5 +71,12 @@ body {
   font-size: 1.4rem;
   padding-top: 1.2rem;
   padding-bottom: 1.2rem;
+}
+
+.episode-summary-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+   overflow: hidden;
 }
 

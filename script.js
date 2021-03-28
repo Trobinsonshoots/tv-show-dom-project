@@ -1,7 +1,7 @@
 // let fetchUrl =  ;
 // let emptyUrl = ;
 
-// let allEpisodes = getAllEpisodes();
+let allEpisodes = getAllEpisodes();
 let allShows = getAllShows();
 const rootElem = document.getElementById('root');
 
@@ -113,15 +113,21 @@ function loadShow() {
     freeSearchCont.style.display = 'none';
     episodesFormSection.style.display = 'flex';
     rowCont.className = "card-group row row-cols-1 row-cols-md-3 g-4";
-    episodeSetup(allShows, showUrl);
+    episodeSetup(showUrl);
     });
   }
 };
 
-function episodeSetup(allShows, url) {
-  allShows = getAllShows();
+// setup fetch to get episodes
+function episodeSetup(url) {
+  let allShows = getAllShows();
   fetch(url)
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok){
+        throw error(`Error Status: ` + res.status);
+      }
+      return res.json();
+    })
     .then((data) => {
       let allEpisodes = data;
       const epAmount = document.createElement('p');
@@ -130,22 +136,47 @@ function episodeSetup(allShows, url) {
       let selectEpisode = document.getElementById('selectEpisode');
 
       makePageForEpisodes(allEpisodes);
-        selectSh(allShows);
-        selectEp(allEpisodes);
-        const logo = document.getElementById('logo');
+      selectSh(allShows);
+      selectEp(allEpisodes);
+      const logo = document.getElementById('logo');
 
       logo.addEventListener('click', (e) => {
         changeFormSection();
         rowCont.className = "row show-content"
         onLoadScreen(allShows);
       });
+
+      input.addEventListener('keyup', (e) => {
+        const inputStr = e.target.value.toLowerCase();
+        console.log(`im input` + inputStr)
+      
+        const searchEp = allEpisodes.filter((ep) => {
+          console.log(ep);
+          // const name = ep ? ep.name : null;
+          let summary = ep ? ep.summary : null;
+          if (ep.summary == null){
+            summary = " "
+          }
+          
+          console.log(summary);
+          let nameLower = ep.name.toLowerCase();
+          let summaryLower = summary.toLowerCase();
+      
+          if (nameLower.includes(inputStr) || summaryLower.includes(inputStr)) {
+            return ep;
+          }
+        });
+        makePageForEpisodes(searchEp);
+      });
 });
 
+// make episodes page
 const makePageForEpisodes = (episodeLi) => {
   console.log(episodeLi);
   epAmount.innerText = `Displaying ${episodeLi.length} episode(s)`;
 
   let htmlStr = episodeLi.map((ep) => {
+    const img = ep && ep.image ? ep.image.medium : null;
     let epNum = ep.number;
     let epSeason = ep.season;
     if (epNum <9) {
@@ -161,7 +192,7 @@ const makePageForEpisodes = (episodeLi) => {
         <div class="card-header">
           <h2 class="card-header-text">${ep.name} - S${epSeason}E${epNum} </h2>
         </div>
-        <img class="card-img-top" src="${ep.image.medium}">
+        <img class="card-img-top" src="${img}">
         <div class="card-body col-10 offset-1">
           ${ep.summary}
         </div>
@@ -172,6 +203,7 @@ const makePageForEpisodes = (episodeLi) => {
   rowCont.innerHTML = htmlStr;
 };
 
+// Make shows select option
 const selectSh = (showList) => {
   let showAlphabeticalOrder = showList.sort((a,b) => a.name.localeCompare(b.name));
 
@@ -186,89 +218,49 @@ const selectSh = (showList) => {
     console.log(showSelected);
 
     const showId = showSelected[0].id.toString();
-    const showsUrl = 'https://api.tvmaze.com/shows/SHOW_ID/episodes';
-    const newShowUrl = showsUrl.replace('SHOW_ID', showId);
+    const showUrl = 'https://api.tvmaze.com/shows/SHOW_ID/episodes';
+    const newShowUrl = showUrl.replace('SHOW_ID', showId);
 
     console.log(newShowUrl);
 
-    episodeSetup(allShows, newShowUrl);
+    episodeSetup(newShowUrl);
   });
 };
 
-  function selectEp(epList) {
-    let selectHtml = epList.map((ep) => {
-      let epNum = ep.number;
-      let epSeason = ep.season;
-      if (epNum < 9) {
-        epNum = `0${epNum}`;
-      }
-      if (epSeason < 9) {
-        epSeason = `0${epSeason}`;
-      }
-      let epSE = `S${epSeason}E${epNum}`;
-      return `<option>${epSE} - ${ep.name}</option>`;
-    }).join('');
-    selectHtml = `<option>All Episodes</option>` + selectHtml;
-    selectEpisode.innerHTML = selectHtml;
-    // select event listener
-    selectEpisode.addEventListener('change', (e) => {
-      let selectedEpVal = e.target.value;
+// make episode select option
+function selectEp(epList) {
+  let selectHtml = epList.map((ep) => {
+    let epNum = ep.number;
+    let epSeason = ep.season;
+    if (epNum < 9) {
+      epNum = `0${epNum}`;
+    }
+    if (epSeason < 9) {
+      epSeason = `0${epSeason}`;
+    }
+    let epSE = `S${epSeason}E${epNum}`;
+    return `<option>${epSE} - ${ep.name}</option>`;
+  }).join('');
+  selectHtml = `<option>All Episodes</option>` + selectHtml;
+  selectEpisode.innerHTML = selectHtml;
+  // select event listener
+  selectEpisode.addEventListener('change', (e) => {
+    let selectedEpVal = e.target.value;
+    console.log(selectedEpVal);
+
+    if (selectedEpVal === 'All Episodes') {
+      makePageForEpisodes(epList);
+    } else {
+      selectedEpVal = selectedEpVal.split('- ', selectedEpVal.length)[1];
       console.log(selectedEpVal);
-
-      if (selectedEpVal === 'All Episodes') {
-        makePageForEpisodes(epList);
-      } else {
-        selectedEpVal = selectedEpVal.split('- ', selectedEpVal.length)[1];
-        console.log(selectedEpVal);
-        const selectedEp = epList.filter(ep => {
-          return ep.name.includes(selectedEpVal);
-        });
-        console.log(selectedEp);
-        makePageForEpisodes(selectedEp);
-      }
-    });
-  }
-
-input.addEventListener('keyup', (e) => {
-  const inputStr = e.target.value.toLowerCase();
-  console.log(`im input` + inputStr)
-
-  const searchEp = allEpisodes.filter( ep => {
-    let nameLower = ep.name.toLowerCase();
-    let summaryLower = ep.summary.toLowerCase();
-
-    if (nameLower.includes(inputStr) || summaryLower.includes(inputStr)) {
-      return ep;
+      const selectedEp = epList.filter(ep => {
+        return ep.name.includes(selectedEpVal);
+      });
+      console.log(selectedEp);
+      makePageForEpisodes(selectedEp);
     }
   });
-  makePageForEpisodes(searchEp);
-});
-
-// function setup(url) {
-//   fetch(url)
-//     .then((res) => res.json())
-//     .then((data) => {
-//       let allEpisodes = data;
-//       const allShows = getAllShows();
-//       onLoadScreen(allShows)
-//       makePageForEpisodes(allEpisodes);
-//       selectEp(allEpisodes);
-//       selectSh(allShows);
-
-    //   input.addEventListener('keyup', (e) => {
-    //     const inputStr = e.target.value.toLowerCase();
-
-    //     const searchEpisodes = allEpisodes.filter( ep => {
-    //       const nameLower = ep.name.toLowerCase();
-    //       const summaryLower = ep.summary.toLowerCase();
-
-    //       if (nameLower.includes(inputStr) || summaryLower.includes(inputStr)) {
-    //         return ep;
-    //       }
-    //     });
-    //     makePageForEpisodes(searchEpisodes);
-    //   });
-    // });
+}
 }
 
 window.onload = onLoadScreen(allShows);
