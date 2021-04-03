@@ -2,44 +2,113 @@
   color: red;
 } */
 
-body {
+/* Colour Scheme */
+:root {
+  --light: #F7F9FB;
+  --primary: #932432;
+  --secondary: #A239CA;
+  --dark: #0E0B16;
+}
+
+#body-styling {
   font-family: 'Montserrat', sans-serif;
-  /* background-color: #261E1D !important; */
+  background-color: var(--light);
   box-sizing: border-box;
 }
 
-#logo {
-  margin-top: 15px;
+#root {
+   background-size: 100vw 100vh;
 }
 
+/* header */
+
+#headerContainer {
+  background-color: var(--primary);
+}
+
+#pageHeader {
+  background-color: var(--light);
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.show-card-header {
+  background-color: var(--primary);
+  padding: 1.5rem 3rem;
+  border-radius: 5px;
+}
+
+#logo, #freeSearchCont {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+/* search fields */
 .free-search-cont {
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
-.episode-count {
+#epAmount {
+  margin-top: 2rem;
   margin-bottom: 0;
 }
 
-.form {
+/* .form {
   padding-top: 1.5rem; 
   padding-bottom: 1.5rem; 
-}
+} */
 
 .inputField {
   margin: 1rem 2rem 1rem 0;
 }
 
-#castList {
-  overflow-y: scroll;
+/* Shows page */
+#castList, #topRatedShows, #dramaShows, #comedyShows, #crimeShows, #actionShows, #adventureShows, #scifiShows  {
+  overflow-y: hidden;
+}
+
+.shows-genre-card-group {
+  margin-right: calc(var(--bs-gutter)/ 2);
+}
+
+.shows-genre-headers, .cast-list-header, .episodes-header {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  background-color: var(--primary);
+  color: var(--light);
+  padding-left: 2rem
+}
+
+/* Show Section */
+/* Episodes and card sections */
+/* Season Header */
+#seasonHeader {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.season-header-title {
+  padding-bottom: 1rem;
+}
+
+/* castList */
+.character-name {
+  font-size: 1rem;
+  margin-bottom: 0.2rem
+}
+
+.person-name {
+  font-size: 0.8rem;
 }
 
 .card {
-  border: none !important;
+  border: none;
 }
 
-
-
+.cast-img-div {
+  margin-bottom: 0.6rem;
+}
 
 .show-name {
   padding-bottom: 0;
@@ -48,21 +117,37 @@ body {
 .header-show-details {
   font-size: 0.8rem;
   margin-right: 15px;
-  color: grey;
+  background-color: var(--background);
 }
 
 .show-rating {
   font-size: 0.8rem;
   margin-left: 5px;
-  color: grey;
+  color: var(--background);
+}
+
+.show-summary {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  padding-bottom: 0px;
+}
+
+.show-card-container {
+  margin-bottom: 1.5rem;
+}
+
+#seasonEpisodes {
+  margin-top: 0;
 }
 
 /* Episode card  */
-.card-header-text-main-page {
+/* .card-header-text-main-page {
   font-size: 1.4rem;
-}
+} */
 
-.card-img-top {
+.card-img-padding {
   padding-bottom: 1.5rem;
 }
 
@@ -78,5 +163,46 @@ body {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
    overflow: hidden;
+}
+
+@media only screen and (max-width: 576px) {
+  .show-card-container{
+    justify-content: center;
+    align-items: center;
+  }
+  .show-card-header-small {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+  .show-card-header-medium {
+    display: none;
+  }
+
+  .shows-genre-card {
+    max-width: 13rem;
+  }
+
+  .cast-card {
+    max-width: 10rem;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+  .shows-genre-card {
+    min-width: 13rem;
+  }
+
+  .cast-card {
+    min-width: 18rem;
+  }
+
+
+  .show-card-header-small {
+    display: none;
+  }
+
+  .show-card-header-medium {
+    display: block;
+  }
 }
 
