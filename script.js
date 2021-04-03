@@ -6,15 +6,14 @@ const headerElem = document.getElementById('header');
 (function pageSetup(){
   let searchFieldsHtml = `
   <div id='freeSearchCont' class='free-search-cont col-8 align-items-center'>
-      <input id='freeSearchInput' type="text" class="form-control" placeholder="search">
+      <input id='freeSearchInput' type="text" class="form-control" placeholder="search shows">
       <select id='selectShow' name="" class="form-select">
         <option value="">Pick Show</option>
       </select>
   </div>
   <div id="pageHeader" class="row">
     <h1 id="pageHeaderTitle" class="col-10 offset-1"></h1>
-    <div id="seasonHeader" class="col-10 offset-1">
-      </div>
+    <div id="seriesHeader" class="col-10 offset-1"></div>
   </div>
   `;
   headerElem.innerHTML += searchFieldsHtml ;
@@ -55,7 +54,7 @@ const headerElem = document.getElementById('header');
       
       <div id="seasonInputContainer" class="row" style="display:none">
         <div class="col-md-4 offset-md-1">
-          <input id='input' type="text" class="input form-control">
+          <input id='input' type="text" class="input form-control" placeholder="search episodes">
         </div>
         
         <div class="col-md-3">
@@ -78,8 +77,6 @@ const headerElem = document.getElementById('header');
 })();
 
 function makeCastList(castList){
-  
-  console.log(castList);
   let castListDiv = document.getElementById('castList');
   castListDiv.style.display = 'flex';
   let castListDisplay = castList.map((cast) => {
@@ -207,7 +204,7 @@ const getGenreListing = () => {
 function onLoadScreen(shows) {
   freeSearchCont.style.display = 'flex';
   showContainer.style.display = 'none';
-  seasonHeader.style.display = 'none';
+  seriesHeader.style.display = 'none';
   let pageHeaderTitle = document.getElementById('pageHeaderTitle')
   pageHeaderTitle.innerText = 'Shows';
   let topRatedShows = document.getElementById('topRatedShows');
@@ -376,8 +373,8 @@ function showSetup(id) {
 }
 
 function seasonInfoHeader(show) {
-  let seasonHeader = document.getElementById('seasonHeader');
-  seasonHeader.style.display = 'flex';
+  let seriesHeader = document.getElementById('seriesHeader');
+  seriesHeader.style.display = 'flex';
   const pageHeader = document.getElementById('pageHeader');
   let pageHeaderTitle = document.getElementById('pageHeaderTitle');
   const showGenres = show.genres.join(' ');
@@ -401,7 +398,7 @@ function seasonInfoHeader(show) {
       </div>
     </div>
   `;
-  seasonHeader.innerHTML = showHtml;
+  seriesHeader.innerHTML = showHtml;
 }
 
 const makePageForEpisodes = (episodeLi) => {
@@ -531,6 +528,7 @@ const selectShow = (showList) => {
 };
 
 function selectEpisode(episodeList) {
+  let seasonSelect = document.getElementById('seasonSelect');
   let selectEpisodeInput = document.getElementById('selectEpisode');
   let selectHtml = episodeList.map((ep) => {
     let epNum = ep.number;
@@ -544,8 +542,10 @@ function selectEpisode(episodeList) {
     let epSE = `S${epSeason}E${epNum}`;
     return `<option>${epSE} - ${ep.name}</option>`;
   }).join('');
-  selectHtml = `<option>All Episodes</option>` + selectHtml;
-  selectEpisodeInput.innerHTML = selectHtml;
+  selectEpisodeStarterHtml = `
+  <option disabled="true" selected="true" value="1">Select Episode</option>
+  <option>All Episodes</option>`;
+  selectEpisodeInput.innerHTML = selectEpisodeStarterHtml + selectHtml;
   // select event listener
   selectEpisodeInput.addEventListener('change', (e) => {
     let selectedEpVal = e.target.value;
@@ -558,23 +558,23 @@ function selectEpisode(episodeList) {
         return ep.name.includes(selectedEpVal);
       });
       makePageForEpisodes(selectedEp);
+      seasonSelect.value = 1;
     }
   });
 }
 
 function seasonEpisodesSelect(episodeList) {
   let seasonSelect = document.getElementById('seasonSelect');
-
+  let selectEpisodeInput = document.getElementById('selectEpisode');
   let seasonNumbers = [];
   let selectStarterOptions = `
-    <option disabled="true" selected="true">Select season</option>
+    <option disabled="true" selected="true" value="1">Select season</option>
     <option>Show All</option>
   `;
   let showSeasonsHtml = episodeList.map((episode) => {
     let seasonNum = episode.season;
 
     if (!seasonNumbers.includes(`Season ${seasonNum}`)){
-      console.log(seasonNum);
       seasonNumbers.push(`Season ${seasonNum}`);
       return `
       <option class="season-select-number">Season ${seasonNum}</option>
@@ -595,6 +595,7 @@ function seasonEpisodesSelect(episodeList) {
       }
     });
     makePageForEpisodes(seasonEpisodesList);
+    selectEpisodeInput.value = 1;
   });
 }
 

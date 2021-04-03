@@ -1,7 +1,3 @@
-/* #root {
-  color: red;
-} */
-
 /* Colour Scheme */
 :root {
   --light: #F7F9FB;
@@ -16,12 +12,11 @@
   box-sizing: border-box;
 }
 
-#root {
-   background-size: 100vw 100vh;
+.card {
+  border: none;
 }
 
 /* header */
-
 #headerContainer {
   background-color: var(--primary);
 }
@@ -30,12 +25,6 @@
   background-color: var(--light);
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-}
-
-.show-card-header {
-  background-color: var(--primary);
-  padding: 1.5rem 3rem;
-  border-radius: 5px;
 }
 
 #logo, #freeSearchCont {
@@ -54,13 +43,8 @@
   margin-bottom: 0;
 }
 
-/* .form {
-  padding-top: 1.5rem; 
-  padding-bottom: 1.5rem; 
-} */
-
-.inputField {
-  margin: 1rem 2rem 1rem 0;
+#seasonInputContainer {
+  margin-top: 3rem;
 }
 
 /* Shows page */
@@ -81,15 +65,10 @@
 }
 
 /* Show Section */
-/* Episodes and card sections */
-/* Season Header */
-#seasonHeader {
+/* Series Header */
+#seriesHeader {
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-
-.season-header-title {
-  padding-bottom: 1rem;
 }
 
 /* castList */
@@ -102,14 +81,11 @@
   font-size: 0.8rem;
 }
 
-.card {
-  border: none;
-}
-
 .cast-img-div {
   margin-bottom: 0.6rem;
 }
 
+/* Episodes and card sections */
 .show-name {
   padding-bottom: 0;
 }
@@ -126,13 +102,7 @@
   color: var(--background);
 }
 
-.show-summary {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-  padding-bottom: 0px;
-}
+
 
 .show-card-container {
   margin-bottom: 1.5rem;
@@ -142,16 +112,11 @@
   margin-top: 0;
 }
 
-/* Episode card  */
-/* .card-header-text-main-page {
-  font-size: 1.4rem;
-} */
-
 .card-img-padding {
   padding-bottom: 1.5rem;
 }
 
-/* when not on main page  */
+/* episode cards  */
 .card-header-text {
   font-size: 1.4rem;
   padding-top: 1.2rem;
@@ -195,7 +160,6 @@
   .cast-card {
     min-width: 18rem;
   }
-
 
   .show-card-header-small {
     display: none;
