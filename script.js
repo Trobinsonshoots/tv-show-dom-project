@@ -85,7 +85,7 @@ function makeCastList(castList){
         let personImg = cast.person && cast.person.image ? cast.person.image.medium : null;
 
         if (personImg === null) {
-          personImg = "/images/no-picture-available.jpg";
+          personImg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU";
         }
         return `
         <div class="card cast-card mb-3">
@@ -147,7 +147,7 @@ function freeSearchResultShows(shows){
   const freeSearchResultShows = document.getElementById('freeSearchResultShows');
 
   let freeSearchResultShowsHtml = shows.map((show) => { 
-    let showImg = show && show.image ? show.image.medium : `/images/no-picture-available.jpg`;
+    let showImg = show && show.image ? show.image.medium : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU`;
     return `
         <div class="card shows-genre-card">
           <div class="col-10">
@@ -215,7 +215,7 @@ function onLoadScreen(shows) {
   let scifiShows = document.getElementById('scifiShows');
 
   let topRatedShowsHtml = shows.slice([0],[10]).map((show) => { 
-    let showImg = show && show.image ? show.image.medium : `/images/no-picture-available.jpg`;
+    let showImg = show && show.image ? show.image.medium : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU`;
     return `
         <div class="card shows-genre-card">
           <div class="col-10">
@@ -238,7 +238,7 @@ function onLoadScreen(shows) {
   const allScifiShows = allShowGenres[0]['Science-Fiction'];
 
   let dramaShowsHtml = allDramaShows.slice([10],[20]).map((show) => { 
-    let showImg = show && show.image ? show.image.medium : `/images/no-picture-available.jpg`;
+    let showImg = show && show.image ? show.image.medium : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU`;
     return `
         <div class="card shows-genre-card">
           <div class="col-10">
@@ -253,7 +253,7 @@ function onLoadScreen(shows) {
   }).join('');
   dramaShows.innerHTML = dramaShowsHtml;
   let comedyShowsHtml = allComedyShows.slice([0],[10]).map((show) => { 
-    let showImg = show && show.image ? show.image.medium : `/images/no-picture-available.jpg`;
+    let showImg = show && show.image ? show.image.medium : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU`;
     return `
         <div class="card shows-genre-card">
           <div class="col-10">
@@ -268,7 +268,7 @@ function onLoadScreen(shows) {
   }).join('');
   comedyShows.innerHTML = comedyShowsHtml;
   let crimeShowsHtml = allCrimeShows.slice([0],[10]).map((show) => { 
-    let showImg = show && show.image ? show.image.medium : `/images/no-picture-available.jpg`;
+    let showImg = show && show.image ? show.image.medium : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU`;
     return `
         <div class="card shows-genre-card">
           <div class="col-10">
@@ -283,7 +283,7 @@ function onLoadScreen(shows) {
   }).join('');
   crimeShows.innerHTML = crimeShowsHtml;
   let actionShowsHtml = allActionShows.slice([0],[10]).map((show) => { 
-    let showImg = show && show.image ? show.image.medium : `/images/no-picture-available.jpg`;
+    let showImg = show && show.image ? show.image.medium : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU`;
     return `
         <div class="card shows-genre-card">
           <div class="col-10">
@@ -298,7 +298,7 @@ function onLoadScreen(shows) {
   }).join('');
   actionShows.innerHTML = actionShowsHtml;
   let scifiShowsHtml = allScifiShows.slice([0],[10]).map((show) => { 
-    let showImg = show && show.image ? show.image.medium : `/images/no-picture-available.jpg`;
+    let showImg = show && show.image ? show.image.medium : `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU`;
     return `
         <div class="card shows-genre-card">
           <div class="col-10">
@@ -412,7 +412,7 @@ const makePageForEpisodes = (episodeLi) => {
     epSummary = epSummary.replaceAll('<p>', "");
     epSummary = epSummary.replaceAll('</p>', " ");
     let epSummaryHtml = `<p id="${summaryId}" class="episode-summary-text">${epSummary}</p>`;
-    let img = ep && ep.image ? ep.image.medium : "/images/no-picture-available.jpg";
+    let img = ep && ep.image ? ep.image.medium : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU";
     let epNum = ep.number;
     let epSeason = ep.season;
     if (epNum <9) {
