@@ -1,5 +1,5 @@
 let allShows = getAllShows();
-const allShowInfoUrl = 'http://api.tvmaze.com/shows/SHOW_ID?embed[]=episodes&embed[]=cast';
+const allShowInfoUrl = 'https://api.tvmaze.com/shows/SHOW_ID?embed[]=episodes&embed[]=cast';
 const rootElem = document.getElementById('root');
 const headerElem = document.getElementById('header');
 
@@ -337,9 +337,6 @@ function loadShow() {
     clickedShow.addEventListener('click', (e) => {
       const showClickedOn= e.target;
       const showId = showClickedOn.id;
-      // const showsUrl = 'https://api.tvmaze.com/shows/SHOW_ID/episodes';
-      // const showUrl = showsUrl.replace('SHOW_ID', showId);
-
     freeSearchCont.style.display = 'none';
     seasonInputContainer.style.display = 'flex';
     showSetup(showId);
@@ -528,13 +525,7 @@ const selectShow = (showList) => {
   selectShowInput.addEventListener('change', (e) => {
     const showName = e.target.value;
     const showSelected = showList.filter((ep) => ep.name === showName);
-
     const showId = showSelected[0].id.toString();
-    // const showUrl = 'https://api.tvmaze.com/shows/SHOW_ID/episodes';
-    // const newShowUrl = showUrl.replace('SHOW_ID', showId);
-
-    // console.log(newShowUrl);
-
     showSetup(showId);
   });
 };
