@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TV Show Project | Tanika (Trobinsonshoots)</title>
+    
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/846a6339d9.js" crossorigin="anonymous"></script>
+    <!-- css -->
+    <link href="../css/common.css" rel="stylesheet" />
+    <link href="../css/user.css" rel="stylesheet" />
+  </head>
+
+  <body id="body-styling">
+    <div id="headerContainer" class="contianer-fluid">
+      <header id='header' class="row align-items-center">
+            <img id='logo' class="col-2 offset-1 col-md-1 offset-md-1 col-lg-1 offset-lg-1" src="https://images.all-free-download.com/images/graphiclarge/online_tv_streaming_logo_6829495.jpg" alt="">
+            <div class="col-1 offset-5 col-md-1 offset-md-8">
+                <a href="./pages/user.html" id="userIcon" class="p-3 far fa-user"></a>
+            </div>
+            
+      </header>
+    </div>
+    <div id="userRoot" class="container">
+      <section id="signUpDiv">
+          <div class="row">
+            <h1 id="heading" class="col 5">Sign Up</h1>  
+          </div>
+          <form id="signInForm" class="needs-validation" novalidate>
+            <div class="row">
+                <div class="col-auto">
+                    <label for="userEmailInput" class="form-label ">Email address</label>
+                    <input type="email" class="form-control " id="userEmailInput" placeholder="name@email.com" aria-describedby="emailValidationFeeback" required>
+                    <div id="emailValidationFeeback">Please provide a valid email address
+                    </div>
+                </div>  
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <label for="userPasswordInput" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="userPasswordInput" aria-describedby="passwordValidationFeeback" required>
+                    <div id="passwordValidationFeeback">
+                        please provide a valid email
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Keep me logged in</label>
+            </div>  
+            <button id="userSignUpSubmit" type="submit" class="btn btn-danger">Submit</button>
+          </form>
+        
+
+
+      </section>
+
+    </div>
+    <footer class="footer container">
+      <div>
+        <p>Content provided by TvMaze.com</p>
+      </div>
+    </footer>
+
+
+    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+    <script src="../js/episodes.js"></script>
+    <script src="../js/cast.js"></script>
+    <script src="../js/seasons.js"></script>
+    <script src="../js/shows.js"></script>
+    <script src="../js/show.js"></script>
+    <!-- <script src="../js/myscript.js"></script> -->
+
+    <script src="../js/userscript.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+<!-- pop up structure 1 -->
