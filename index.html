@@ -31,10 +31,17 @@
       <header id="header" class="row align-items-center">
         <img
           id="logo"
-          class="col-2 offset-1 col-md-1 offset-1 col-lg-1 offset-1"
+          class="col-2 offset-1 col-md-1 offset-md-1 col-lg-1 offset-lg-1"
           src="https://images.all-free-download.com/images/graphiclarge/online_tv_streaming_logo_6829495.jpg"
           alt=""
         />
+        <div id="userIconContainer" class="col-4 offset-5 col-md-2 offset-md-8" style="display: none">
+          <div class="row">
+            <a href="./pages/user.html" id="userIcon" class="col-3 p-3 far fa-user"></a>
+            <i id="logOutIcon" class="col-3 mx-2 p-3 clickable fas fa-sign-out-alt"></i>
+          </div>
+          
+        </div> 
       </header>
     </div>
     <div id="showPopUp" class="show-pop-up">
@@ -43,7 +50,7 @@
       </div>
     </div>
     <div id="root" class="container"></div>
-    <footer class="footer container">
+    <footer class="footer container fixed-bottom">
       <div>
         <p>Content provided by TvMaze.com</p>
       </div>

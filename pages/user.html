@@ -18,32 +18,77 @@
   <body id="body-styling">
     <div id="headerContainer" class="contianer-fluid">
       <header id='header' class="row align-items-center">
-            <img id='logo' class="col-2 offset-1 col-md-1 offset-md-1 col-lg-1 offset-lg-1" src="https://images.all-free-download.com/images/graphiclarge/online_tv_streaming_logo_6829495.jpg" alt="">
-            <div class="col-1 offset-5 col-md-1 offset-md-8">
-                <a href="./pages/user.html" id="userIcon" class="p-3 far fa-user"></a>
-            </div>
-            
+            <img 
+            id='logo' 
+            class="col-2 offset-1 col-md-1 offset-md-1 col-lg-1 offset-lg-1" src="https://images.all-free-download.com/images/graphiclarge/online_tv_streaming_logo_6829495.jpg" 
+            alt="">
+            <div class="col-4 offset-5 col-md-2 offset-md-8">
+              <div class="row">
+                <a href="./user.html" id="userIcon" class="col-3 p-3 far fa-user"></a>
+                <i id="logOutIcon" class="col-3 mx-2 p-3 clickable fas fa-sign-out-alt"></i>
+              </div>
+            </div> 
       </header>
     </div>
-    <div id="userRoot" class="container">
-      <section id="signUpDiv">
-          <div class="row">
-            <h1 id="heading" class="col 5">Sign Up</h1>  
-          </div>
-          <form id="signInForm" class="needs-validation" novalidate>
-            <div class="row">
-                <div class="col-auto">
-                    <label for="userEmailInput" class="form-label ">Email address</label>
-                    <input type="email" class="form-control " id="userEmailInput" placeholder="name@email.com" aria-describedby="emailValidationFeeback" required>
-                    <div id="emailValidationFeeback">Please provide a valid email address
+    <div id="userRoot" class="container"> 
+      <div class="row">
+        <h1 id="heading" class="col 5">Welcome</h1> 
+        <p id="headingInfo">If you are a new user register below, if you are a member click the sign in tab to sign in.</p> 
+      </div>
+      <section id="signUpDiv" style="display: none">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="signUpForm-tab" data-bs-toggle="tab" data-bs-target="#signUpForm" type="button" role="tab" aria-controls="signUpForm" aria-selected="true">Sign Up</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="signInForm-tab" data-bs-toggle="tab" data-bs-target="#signInForm" type="button" role="tab" aria-controls="signInForm" aria-selected="false">Sign In</button>
+          </li>
+        </ul>
+        <div id="userFormContent" class="tab-content">
+          <form id="signUpForm" class="needs-validation tab-pane fade active show" role="tabpanel" aria-labelledby="signUpForm-tab"
+           novalidate style="display: block">
+            <div class="row" >
+              <div class="col-auto mt-3 mb-3">
+                  <label for="signUpUserName" class="form-label ">Username</label>
+                  <input type="text" class="form-control" id="signUpUserName" aria-label="Username" placeholder="Create Username" aria-describedby="usernameValidationFeedback" required>
+                  <div id="usernameValidationFeedback" class="invalid-feedback">Please provide a user address
+                  </div>
+                </div>  
+            </div>
+            <div class="row" >
+                <div class="col-auto mb-3">
+                    <label for="signUpUserEmailInput" class="form-label ">Email address</label>
+                    <input type="email" class="form-control " id="signUpUserEmailInput" placeholder="name@email.com" aria-describedby="emailValidationFeedback" required>
+                    <div id="emailValidationFeedback" class="invalid-feedback">Please provide a valid email address
                     </div>
                 </div>  
             </div>
             <div class="row">
-                <div class="col-auto">
-                    <label for="userPasswordInput" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="userPasswordInput" aria-describedby="passwordValidationFeeback" required>
-                    <div id="passwordValidationFeeback">
+                <div class="col-auto mb-3">
+                    <label for="signUpUserPasswordInput" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signUpUserPasswordInput" aria-describedby="passwordValidationFeedback" required>
+                    <div id="passwordValidationFeedback" class="invalid-feedback">
+                        please provide a valid email
+                    </div>
+                </div>
+            </div>
+            <button id="userSignUpSubmit" type="submit" class="btn btn-danger">Sign Up</button>
+          </form>
+
+          <form id="signInForm" class="needs-validation tab-pane fade" role="tabpanel" aria-labelledby="signInForm-tab" novalidate style="display: block">
+            <div class="row" >
+              <div class="col-auto mt-3 mb-3">
+                  <label for="signInUserNameEmail" class="form-label ">Username or Email</label>
+                  <input type="text" class="form-control" id="signInUserNameEmail" aria-describedby="signInInvalid" required>
+                  <div id="signInInvalid" class="sign-in-invalid">Please provide a valid username or email address
+                  </div>
+                </div>  
+            </div>
+            <div class="row">
+                <div class="col-auto mb-3">
+                    <label for="signInUserPasswordInput" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signInUserPasswordInput" aria-describedby="passwordValidationFeedback" required>
+                    <div id="passwordValidationFeedback" class="invalid-feedback">
                         please provide a valid email
                     </div>
                 </div>
@@ -52,15 +97,22 @@
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
                 <label class="form-check-label" for="exampleCheck1">Keep me logged in</label>
             </div>  
-            <button id="userSignUpSubmit" type="submit" class="btn btn-danger">Submit</button>
-          </form>
-        
+            <button id="userSignInSubmit" type="submit" class="btn btn-danger">Submit</button>
+          </form>          
+        </div>
+      </section>
+      
+      <section id="usersPageContainer">
+        <h2 id="favShowsHeading">    
+        </h2>
+        <div id="usersPage" class="row flex-nowrap g-4 mt-3">
 
+        </div>
 
       </section>
 
     </div>
-    <footer class="footer container">
+    <footer class="footer container fixed-bottom">
       <div>
         <p>Content provided by TvMaze.com</p>
       </div>

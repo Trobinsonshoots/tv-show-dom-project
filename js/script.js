@@ -220,13 +220,13 @@ function onLoadScreen(shows) {
   let topRatedShowsHtml = shows.slice([0],[10]).map((show) => { 
     let showImg = show.image?.medium ?? `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU`;
     return `
-        <div class="card shows-genre-card h-100">
+        <div class="card shows-genre-card">
           <div class="col-10">
             <img src="${showImg}" class="card-img-top " alt="...">
           </div>
           <div class="card-body p-0 row h-100">
-            <h5 id="${show.id}" class="card-title show-name col-10 ">${show.name}</h5>
-            <div class="col-10">
+            <h5 id="${show.id}" class="all-shows-card-name card-title show-name col-10 ">${show.name}</h5>
+            <div class="col-10 align-self-end">
               <p class="card-text"><i class="star-rating fas fa-star"></i>${show.rating.average}</p>
             </div>
           </div>
@@ -244,13 +244,15 @@ function onLoadScreen(shows) {
       let dramaShowsHtml = genreShowList.slice([20], [30]).map((show) => { 
       let showImg = show.image?.medium ?? `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU`;
       return `
-            <div class="card shows-genre-card h-100">
-              <div class="col-10">
+            <div class="card shows-genre-card">
+              <div class="col-12">
                 <img src="${showImg}" class="card-img-top " alt="...">
               </div>
-              <div class="card-body p-0">
-                <h5 id="${show.id}" class="card-title show-name">${show.name}</h5>
-                <p class="card-text">${show.rating.average}</p>
+              <div class="card-body p-0 row h-100">
+                <h5 id="${show.id}" class="all-shows-card-name card-title show-name col-10 ">${show.name}</h5>
+                <div class="col-10 align-self-end">
+                  <p class="card-text"><i class="star-rating fas fa-star"></i> ${show.rating.average}</p>
+                </div>
               </div>
             </div>
             `
@@ -264,9 +266,11 @@ function onLoadScreen(shows) {
               <div class="col-10">
                 <img src="${showImg}" class="card-img-top " alt="...">
               </div>
-              <div class="card-body p-0">
-                <h5 id="${show.id}" class="card-title show-name">${show.name}</h5>
-                <p class="card-text">${show.rating.average}</p>
+              <div class="card-body p-0 row h-100">
+                <h5 id="${show.id}" class="all-shows-card-name card-title show-name col-10 ">${show.name}</h5>
+                <div class="col-10 align-self-end">
+                  <p class="card-text"><i class="star-rating fas fa-star"></i> ${show.rating.average}</p>
+                </div>
               </div>
             </div>
             `
@@ -346,7 +350,6 @@ function showPopUp(showIdNo) {
 
 function closeShowPopUp() {
   document.getElementById('showPopUpClose').addEventListener('click', (e) => {
-    e.preventDefault
     showPopUpDiv.style.display = 'none';
   });
 }
@@ -386,7 +389,8 @@ function showSetup(id) {
       seasonEpisodesSelect(episodes);
       selectEpisode(episodes);
       selectShow(allShows);
-      makePageForEpisodes(episodes);
+      makePageForEpisodes(showInfo, episodes);
+      // addFavShow(show)
     })
     .catch((error) => console.log(error));
 }
@@ -397,20 +401,21 @@ function seasonInfoHeader(show) {
   const pageHeader = document.getElementById('pageHeader');
   let pageHeaderTitle = document.getElementById('pageHeaderTitle');
   const showGenres = show.genres.join(' ');
+  let showId = show.id;
   let pageHeaderHtml = `
-  ${show.name} <span class="show-rating "><i class="star-rating fas fa-star"></i>${show.rating.average}</span>
+  ${show.name} <button id="${show.id}" class="btn btn-danger"><i class="fas fa-plus"></i></button>
   </br><span class="header-show-details"><strong>Genres:</strong> ${showGenres}</span> <span class="header-show-details"><strong>Status:</strong>${show.status}</span> <span class="header-show-details"><strong>Runtime:</strong>${show.runtime}</span>
   `;
   pageHeaderTitle.innerHTML = pageHeaderHtml;
   let showImg = show.image.medium;
   const epAmount = document.createElement('p');
   epAmount.classList.add('col-md-4', 'episode-count');
-  
 
   let showHtml = `
     <div class="row">
       <div class="col-6 offset-3 col-md-2 offset-md-0">
         <img src="${showImg}" class="card-img-top">
+        <h2 class="show-rating "><i class="series-header-star-rating fas fa-star"></i>${show.rating.average}</h2>
       </div>
       <div class="col-12 col-md-10">
         ${show.summary}
@@ -418,10 +423,13 @@ function seasonInfoHeader(show) {
     </div>
   `;
   seriesHeader.innerHTML = showHtml;
+  addFavShow(showId);
 }
 
-const makePageForEpisodes = (episodeLi) => {
-  seasonInputContainer.style.display ="flex";
+const makePageForEpisodes = (show, episodeLi) => {
+  let userIconContainer = document.getElementById('userIconContainer');
+  userIconContainer.style.display = 'inline';
+  seasonInputContainer.style.display = 'flex';
   let seasonEpisodes = document.getElementById('seasonEpisodes');
   epAmount.innerText = `Displaying ${episodeLi.length} episode(s)`;
 
@@ -441,9 +449,6 @@ const makePageForEpisodes = (episodeLi) => {
       epSeason = `0${epSeason}`;
     }
     let dataTargetValue = `#collapse${index}`;
-    
-    
-    
 
     return `
     <div class="col">
@@ -455,7 +460,16 @@ const makePageForEpisodes = (episodeLi) => {
         <div class="card-body col-10 offset-1 episode-summary">
           ${epSummaryHtml}
         </div>
-        <button class="btn btn-danger col-12 read-more-btn" type="button" data-toggle="collapse" data-target="${dataTargetValue}" aria-expanded="false" aria-controls="collapse1">read more</button>
+        <div class="row justify-content-center">
+          <button class="btn btn-danger col-8 read-more-btn" type="button" data-toggle="collapse" data-target="${dataTargetValue}" aria-expanded="false" aria-controls="collapse1">read more</button>
+          <div class="btn-group col-1">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            </button>
+            <ul class="dropdown-menu">
+              <li><a id="${ep.id}" class="dropdown-item episode-tracker" href="#">Current Episode</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
     `;
@@ -464,13 +478,15 @@ const makePageForEpisodes = (episodeLi) => {
 
   addTruncateSummary();
   logo.addEventListener('click', () => {
+    userIconContainer.style.display = 'none';
     changeFormSection();
     showContainer.className = "row show-content"
     onLoadScreen(allShows);
   });
 
-  let input = document.getElementById('input');
+  episodeLog(show);
 
+  let input = document.getElementById('input');
   input.addEventListener('keyup', (e) => {
     const inputStr = e.target.value.toLowerCase();
     console.log(`im input` + inputStr)
@@ -479,8 +495,8 @@ const makePageForEpisodes = (episodeLi) => {
       console.log(ep);
       // const name = ep ? ep.name : null;
       let summary = ep ? ep.summary : null;
-      if (ep.summary == null){
-        summary = " "
+      if (ep.summary == null) {
+        summary = " ";
       }
 
       console.log(summary);
@@ -493,23 +509,21 @@ const makePageForEpisodes = (episodeLi) => {
     });
     makePageForEpisodes(searchEp);
   });
-
 };
 
 const addTruncateSummary = () => {
   let readMoreBtns = document.getElementsByClassName('read-more-btn');
   let card = document.getElementsByClassName('episode-card');
-    for (let i=0; i < readMoreBtns.length; i++) {
-      let currentCard = card[i];
-      let nextCard = card[i+1];
-      let previousCard = card[i-1];
-      
+  for (let i=0; i < readMoreBtns.length; i++) {
+    let currentCard = card[i];
+    let nextCard = card[i+1];
+    let previousCard = card[i-1];
     let readMore = readMoreBtns[i];
 
     readMore.addEventListener('click', (e) => {
       let targetAttributeId = e.target.attributes[3].value.slice(1);
       let summaryWithId = document.getElementById(targetAttributeId);
-      if (summaryWithId.style.display != 'flex'){
+      if (summaryWithId.style.display != 'flex') {
         summaryWithId.style.display = 'flex';
         currentCard.classList.remove('h-100');
         if (i %2 == 0) {
@@ -526,9 +540,34 @@ const addTruncateSummary = () => {
           previousCard.classList.add('h-100');
         }
       }
-    })
-  };
+    });
+  }
 };
+
+function episodeLog(show) {
+  let userDetails = JSON.parse(localStorage.getItem('users'));
+  let episodeDropDownItem = document.getElementsByClassName('episode-tracker');
+
+  for (let i = 0; i < episodeDropDownItem.length; i++) {
+    let currentDropDownItem = episodeDropDownItem[i];
+    // eslint-disable-next-line no-loop-func
+    currentDropDownItem.addEventListener('click', (e) => {
+      e.preventDefault();
+      const episodeId = e.target.id;
+      let users = userDetails.map((user) => {
+        if (user.signedIn === true) {
+          let trackedShow = {
+            showId: show.id,
+            favEpisodes: episodeId,
+          };
+          user.episodeTracker.push(trackedShow);
+        }
+        return user;
+      });
+      localStorage.setItem('users', JSON.stringify(users));
+    });
+  }
+}
 
 const selectShow = (showList) => {
   let selectShowInput = document.getElementById('selectShow');
@@ -618,4 +657,20 @@ function seasonEpisodesSelect(episodeList) {
   });
 }
 
+function addFavShow(show) {
+  let favBtn = document.getElementById(`${show}`);
+  favBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    let userDetails = JSON.parse(localStorage.getItem('users'));
+    let users = userDetails.map((user) => {
+      if (user.signedIn === true) {
+        if (!user.favShows.includes(favBtn.id)) {
+          user.favShows.push(favBtn.id);
+        }
+      }
+      return user;
+    });
+    localStorage.setItem('users', JSON.stringify(users));
+  });
+}
 window.onload = onLoadScreen(allShows);

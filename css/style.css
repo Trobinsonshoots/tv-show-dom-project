@@ -38,11 +38,23 @@
   padding-left: 2rem
 }
 
+  /* cards */
+  .all-shows-card-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
 /* Show Section */
 /* Series Header */
 #seriesHeader {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.series-header-star-rating {
+  color: var(--light);
 }
 
 /* castList */
@@ -71,9 +83,12 @@
 }
 
 .show-rating {
-  font-size: 0.8rem;
-  margin-left: 5px;
-  color: var(--background);
+  background-color: var(--primary);
+  font-size: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  /* margin-left: 5px; */
+  color: var(--light);
 }
 
 .show-card-container {
@@ -135,10 +150,10 @@
   cursor: pointer;
 }
 
-#userIcon {
+/* #userIcon {
   background-color: var(--light);
   border-radius: 2rem;;
-}
+} */
 
 .show-summary-text {
   height: 300px;

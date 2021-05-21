@@ -2,3 +2,17 @@
     padding-top: 2rem;
     padding-bottom: 2rem;
 }
+
+/* #logOutIcon {
+    background-color: var(--light);
+    border-radius: 2rem;;
+    color: var(--primary);
+} */
+
+.sign-in-invalid {
+    color: red;
+}
+
+.user-fav-star-rating {
+    font-size: 1rem;
+}
