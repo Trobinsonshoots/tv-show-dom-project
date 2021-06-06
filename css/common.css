@@ -1,0 +1,57 @@
+/* Colour Scheme */
+:root {
+    --light: #F7F9FB;
+    --primary: #932432;
+    --secondary: #A239CA;
+    --dark: #0E0B16;
+  }
+  
+  #body-styling {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--light);
+    box-sizing: border-box;
+  }
+  
+  .card {
+    border: none;
+  }
+
+  #root, #userRoot {
+    margin-bottom: 2.5rem;
+  }
+  
+  /* header */
+  #headerContainer {
+    background-color: var(--primary);
+  }
+
+  #logo, #freeSearchCont {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .clickable {
+    cursor: pointer;
+  }
+
+  /* user Icon */
+  #userIcon {
+    background-color: var(--light);
+    border-radius: 2rem;
+    color: var(--primary)
+  }
+
+  #logOutIcon {
+    background-color: var(--light);
+    border-radius: 2rem;;
+    color: var(--primary);
+  }
+
+  /* star rating */
+  .star-rating {
+    color: var(--primary);
+  }
+
+.footer {
+  background-color: var(--light);
+  }

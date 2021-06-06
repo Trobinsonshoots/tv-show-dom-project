@@ -1,0 +1,208 @@
+/* Colour Scheme */
+
+#pageHeader {
+  background-color: var(--light);
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/* search fields */
+.free-search-cont {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#epAmount {
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+
+#seasonInputContainer {
+  margin-top: 3rem;
+}
+
+/* Shows page */
+#castList, #topRatedShows, #dramaShows, #comedyShows, #crimeShows, #actionShows, #adventureShows, #scifiShows  {
+  overflow-y: hidden;
+}
+
+.shows-genre-card-group {
+  margin-right: calc(var(--bs-gutter)/ 2);
+}
+
+.shows-genre-headers, .show-pop-up-header, .cast-list-header, .episodes-header {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  background-color: var(--primary);
+  color: var(--light);
+  padding-left: 2rem
+}
+
+  /* cards */
+  .all-shows-card-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+/* Show Section */
+/* Series Header */
+#seriesHeader {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.series-header-star-rating {
+  color: var(--light);
+}
+
+/* castList */
+.character-name {
+  font-size: 1rem;
+  margin-bottom: 0.2rem
+}
+
+.person-name {
+  font-size: 0.8rem;
+}
+
+.cast-img-div {
+  margin-bottom: 0.6rem;
+}
+
+/* Episodes and card sections */
+.show-name {
+  padding-bottom: 0;
+}
+
+.header-show-details {
+  font-size: 0.8rem;
+  margin-right: 15px;
+  background-color: var(--background);
+}
+
+.show-rating {
+  background-color: var(--primary);
+  font-size: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  /* margin-left: 5px; */
+  color: var(--light);
+}
+
+.show-card-container {
+  margin-bottom: 1.5rem;
+}
+
+#seasonEpisodes {
+  margin-top: 0;
+}
+
+.card-img-padding {
+  padding-bottom: 1.5rem;
+}
+
+/* episode cards  */
+.card-header-text {
+  font-size: 1.4rem;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+}
+
+.episode-summary-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+   overflow: hidden;
+}
+
+/* Show Pop Up */
+
+.show-pop-up {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.4);
+  /* position: fixed; */
+  position: fixed;
+  top: 0;
+  z-index: 5;
+}
+
+.pop-up-bg {
+  padding: 0 0.7rem;
+  background-color: var(--light);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.show-pop-up-header-title {
+  padding-top: 1.5rem;
+}
+
+.close-btn {
+  padding-bottom: 1rem;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+/* #userIcon {
+  background-color: var(--light);
+  border-radius: 2rem;;
+} */
+
+.show-summary-text {
+  height: 300px;
+  overflow-y: scroll;
+  padding-bottom: 2rem;
+}
+
+.show-summary-text::-webkit-scrollbar {
+    display: none;
+}
+
+@media only screen and (max-width: 576px) {
+  .show-card-container{
+    justify-content: center;
+    align-items: center;
+  }
+  .show-card-header-small {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+  .show-card-header-medium {
+    display: none;
+  }
+
+  .shows-genre-card {
+    max-width: 13rem;
+  }
+
+  .cast-card {
+    max-width: 10rem;
+  }
+}
+
+
+@media only screen and (min-width: 576px) {
+  .shows-genre-card {
+    min-width: 13rem;
+  }
+
+  .cast-card {
+    min-width: 18rem;
+  }
+
+  .show-card-header-small {
+    display: none;
+  }
+
+  .show-card-header-medium {
+    display: block;
+  }
+}
+

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TV Show Project | Tanika (Trobinsonshoots)</title>
+    
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/846a6339d9.js" crossorigin="anonymous"></script>
+    <!-- css -->
+    <link href="../css/common.css" rel="stylesheet" />
+    <link href="../css/user.css" rel="stylesheet" />
+  </head>
+
+  <body id="body-styling">
+    <div id="headerContainer" class="contianer-fluid">
+      <header id='header' class="row align-items-center">
+            <img 
+            id='logo' 
+            class="col-2 offset-1 col-md-1 offset-md-1 col-lg-1 offset-lg-1" src="https://images.all-free-download.com/images/graphiclarge/online_tv_streaming_logo_6829495.jpg" 
+            alt="">
+            <div class="col-4 offset-5 col-md-2 offset-md-8">
+              <div class="row">
+                <a href="./user.html" id="userIcon" class="col-3 p-3 far fa-user"></a>
+                <i id="logOutIcon" class="col-3 mx-2 p-3 clickable fas fa-sign-out-alt"></i>
+              </div>
+            </div> 
+      </header>
+    </div>
+    <div id="userRoot" class="container"> 
+      <div class="row">
+        <h1 id="heading" class="col 5">Welcome</h1> 
+        <p id="headingInfo">If you are a new user register below, if you are a member click the sign in tab to sign in.</p> 
+      </div>
+      <section id="signUpDiv" style="display: none">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="signUpForm-tab" data-bs-toggle="tab" data-bs-target="#signUpForm" type="button" role="tab" aria-controls="signUpForm" aria-selected="true">Sign Up</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="signInForm-tab" data-bs-toggle="tab" data-bs-target="#signInForm" type="button" role="tab" aria-controls="signInForm" aria-selected="false">Sign In</button>
+          </li>
+        </ul>
+        <div id="userFormContent" class="tab-content">
+          <form id="signUpForm" class="needs-validation tab-pane fade active show" role="tabpanel" aria-labelledby="signUpForm-tab"
+           novalidate style="display: block">
+            <div class="row" >
+              <div class="col-auto mt-3 mb-3">
+                  <label for="signUpUserName" class="form-label ">Username</label>
+                  <input type="text" class="form-control" id="signUpUserName" aria-label="Username" placeholder="Create Username" aria-describedby="usernameValidationFeedback" required>
+                  <div id="usernameValidationFeedback" class="invalid-feedback">Please provide a user address
+                  </div>
+                </div>  
+            </div>
+            <div class="row" >
+                <div class="col-auto mb-3">
+                    <label for="signUpUserEmailInput" class="form-label ">Email address</label>
+                    <input type="email" class="form-control " id="signUpUserEmailInput" placeholder="name@email.com" aria-describedby="emailValidationFeedback" required>
+                    <div id="emailValidationFeedback" class="invalid-feedback">Please provide a valid email address
+                    </div>
+                </div>  
+            </div>
+            <div class="row">
+                <div class="col-auto mb-3">
+                    <label for="signUpUserPasswordInput" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signUpUserPasswordInput" aria-describedby="passwordValidationFeedback" required>
+                    <div id="passwordValidationFeedback" class="invalid-feedback">
+                        please provide a valid email
+                    </div>
+                </div>
+            </div>
+            <button id="userSignUpSubmit" type="submit" class="btn btn-danger">Sign Up</button>
+          </form>
+
+          <form id="signInForm" class="needs-validation tab-pane fade" role="tabpanel" aria-labelledby="signInForm-tab" novalidate style="display: block">
+            <div class="row" >
+              <div class="col-auto mt-3 mb-3">
+                  <label for="signInUserNameEmail" class="form-label ">Username or Email</label>
+                  <input type="text" class="form-control" id="signInUserNameEmail" aria-describedby="signInInvalid" required>
+                  <div id="signInInvalid" class="sign-in-invalid">Please provide a valid username or email address
+                  </div>
+                </div>  
+            </div>
+            <div class="row">
+                <div class="col-auto mb-3">
+                    <label for="signInUserPasswordInput" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="signInUserPasswordInput" aria-describedby="passwordValidationFeedback" required>
+                    <div id="passwordValidationFeedback" class="invalid-feedback">
+                        please provide a valid email
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Keep me logged in</label>
+            </div>  
+            <button id="userSignInSubmit" type="submit" class="btn btn-danger">Submit</button>
+          </form>          
+        </div>
+      </section>
+      
+      <section id="usersPageContainer">
+        <h2 id="favShowsHeading">    
+        </h2>
+        <div id="usersPage" class="row flex-nowrap g-4 mt-3">
+
+        </div>
+
+      </section>
+
+    </div>
+    <footer class="footer container fixed-bottom">
+      <div>
+        <p>Content provided by TvMaze.com</p>
+      </div>
+    </footer>
+
+
+    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+    <script src="../js/episodes.js"></script>
+    <script src="../js/cast.js"></script>
+    <script src="../js/seasons.js"></script>
+    <script src="../js/shows.js"></script>
+    <script src="../js/show.js"></script>
+    <!-- <script src="../js/myscript.js"></script> -->
+
+    <script src="../js/userscript.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+<!-- pop up structure 1 -->
